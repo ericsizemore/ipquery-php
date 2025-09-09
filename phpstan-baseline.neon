@@ -1,0 +1,115 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#2 \$format of method Esi\\IPQuery\\Api\\IP\:\:sendRequest\(\) expects ''json''\|''xml''\|''yaml'', ''toml'' given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Api/IPTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Esi\\\\IPQuery\\\\Client'' and Esi\\IPQuery\\Client will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 6
+			path: tests/ClientTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Psr\\\\Http\\\\Message\\\\StreamFactoryInterface'' and Psr\\Http\\Message\\StreamFactoryInterface will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: tests/ClientTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Http\\\\Client\\\\Common\\\\HttpMethodsClientInterface'' and Http\\Client\\Common\\HttpMethodsClientInterface will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: tests/HttpClient/BuilderTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Psr\\\\Http\\\\Message\\\\RequestFactoryInterface'' and Psr\\Http\\Message\\RequestFactoryInterface will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: tests/HttpClient/BuilderTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Psr\\\\Http\\\\Message\\\\StreamFactoryInterface'' and Psr\\Http\\Message\\StreamFactoryInterface will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: tests/HttpClient/BuilderTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Psr\\\\Http\\\\Message\\\\UriFactoryInterface'' and Psr\\Http\\Message\\UriFactoryInterface will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: tests/HttpClient/BuilderTest.php
+
+		-
+			message: '#^Parameter \#1 \$pluginClassName of method Esi\\IPQuery\\HttpClient\\Builder\:\:removePlugin\(\) expects class\-string\<Http\\Client\\Common\\Plugin\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/HttpClient/BuilderTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Http\\\\Promise\\\\Promise'' and Http\\Promise\\Promise will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: tests/HttpClient/Plugin/ExceptionThrowerTest.php
+
+		-
+			message: '#^Parameter \#2 \$next of method Esi\\IPQuery\\HttpClient\\Plugin\\ExceptionThrower\:\:handleRequest\(\) expects callable\(Psr\\Http\\Message\\RequestInterface\)\: Http\\Promise\\Promise, Closure\(PHPUnit\\Framework\\MockObject\\MockObject&Psr\\Http\\Message\\RequestInterface\)\: Http\\Client\\Promise\\HttpFulfilledPromise given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/HttpClient/Plugin/ExceptionThrowerTest.php
+
+		-
+			message: '#^Parameter \#3 \$first of method Esi\\IPQuery\\HttpClient\\Plugin\\ExceptionThrower\:\:handleRequest\(\) expects callable\(Psr\\Http\\Message\\RequestInterface\)\: Http\\Promise\\Promise, Closure\(PHPUnit\\Framework\\MockObject\\MockObject&Psr\\Http\\Message\\RequestInterface\)\: Http\\Client\\Promise\\HttpFulfilledPromise given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/HttpClient/Plugin/ExceptionThrowerTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Esi\\\\IPQuery\\\\HttpClient\\\\Plugin\\\\RateLimiter'' and Esi\\IPQuery\\HttpClient\\Plugin\\RateLimiter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: tests/HttpClient/Plugin/RateLimiterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Http\\\\Promise\\\\Promise'' and Http\\Promise\\Promise will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 3
+			path: tests/HttpClient/Plugin/RateLimiterTest.php
+
+		-
+			message: '#^Cannot call method method\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/HttpClient/Plugin/RateLimiterTest.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$reservation contains unresolvable type\.$#'
+			identifier: varTag.unresolvableType
+			count: 6
+			path: tests/HttpClient/Plugin/RateLimiterTest.php
+
+		-
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createMock\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 6
+			path: tests/HttpClient/Plugin/RateLimiterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with 10000 and 10000 will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: tests/UtilTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with array\{''json'', ''xml'', ''yaml''\} and array\{''json'', ''xml'', ''yaml''\} will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: tests/UtilTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with array\{id\: ''custom\-id'', limit\: 5, policy\: ''fixed_window'', interval\: ''3 seconds''\} and array\{id\: string, policy\: ''fixed_window''\|''sliding_window''\|''token_bucket'', limit\: int, interval\: string\} will always evaluate to false\.$#'
+			identifier: staticMethod.impossibleType
+			count: 1
+			path: tests/UtilTest.php

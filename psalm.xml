@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedPsalmSuppress="true"
+    limitMethodComplexity="true"
+>
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name=".github"/>
+            <directory name="vendor"/>
+        </ignoreFiles>
+        <ignoreFiles allowMissingFiles="true">
+            <directory name="build"/>
+            <directory name="docs"/>
+        </ignoreFiles>
+    </projectFiles>
+    <extraFiles>
+        <directory name="tests"/>
+    </extraFiles>
+    <issueHandlers>
+        <!--
+            In moving 'tests' from projectFiles to extraFiles, some methods/classes are reported
+            as unused (when they are not). Suppress for now, until tests can be refactored.
+        -->
+        <UnusedProperty>
+            <errorLevel type="suppress">
+                <directory name="src" />
+            </errorLevel>
+        </UnusedProperty>
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <directory name="src" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="src" />
+            </errorLevel>
+        </UnusedClass>
+        <ClassMustBeFinal>
+            <errorLevel type="suppress">
+                <directory name="src" />
+            </errorLevel>
+        </ClassMustBeFinal>
+    </issueHandlers>
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
+</psalm>
