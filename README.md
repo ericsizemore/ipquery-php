@@ -1,4 +1,4 @@
-# PHP Project Template
+# IPQuery PHP
 
 [![Build Status](https://scrutinizer-ci.com/g/ericsizemore/ipquery-php/badges/build.png?b=main)](https://scrutinizer-ci.com/g/ericsizemore/ipquery-php/build-status/main)
 [![Code Coverage](https://scrutinizer-ci.com/g/ericsizemore/ipquery-php/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/ericsizemore/ipquery-php/?branch=main)
