@@ -102,9 +102,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\HttpFactory;
 
 $factory = new HttpFactory();
-$client = new Client(new Builder(new GuzzleClient(), $factory, $factory, $factory));
-
-$ipApi = new IP(new Client());
+$ipApi = new IP(new Client(new Builder(new GuzzleClient(), $factory, $factory, $factory)));
 
 var_dump($ipApi->sendRequest(['1.1.1.1', '8.8.8.8']));
 ```
