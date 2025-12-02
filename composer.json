@@ -49,7 +49,7 @@
         "psr/http-client-implementation": "^1.0",
         "psr/http-factory-implementation": "^1.0",
         "psr/http-message": "^2.0",
-        "symfony/rate-limiter": "^7.3"
+        "symfony/rate-limiter": "^8.0"
     },
     "require-dev": {
         "cache/filesystem-adapter": "^1.2",
