@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '8.3', '8.4' ]
+        php: [ '8.4', '8.5' ]
     steps:
       - uses: actions/checkout@v6
 
@@ -39,7 +39,8 @@ jobs:
         uses: ramsey/composer-install@v3
         with:
            composer-options: "--prefer-dist --optimize-autoloader"
-           require-lock-file: "true"
+           require-lock-file: "false"
+           dependency-versions: "highest"
 
       - name: "Run PHPStan"
         run: composer run-script phpstan
@@ -50,10 +51,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: "Install PHP 8.3"
+      - name: "Install PHP 8.4"
         uses: shivammathur/setup-php@master
         with:
-          php-version: 8.3
+          php-version: 8.4
           extensions: mbstring
           coverage: none
 
@@ -64,7 +65,8 @@ jobs:
         uses: ramsey/composer-install@v3
         with:
           composer-options: "--prefer-dist --optimize-autoloader"
-          require-lock-file: "true"
+          require-lock-file: "false"
+          dependency-versions: "highest"
 
       - name: "Psalm Analysis"
         run: composer run-script psalm:ci
@@ -79,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '8.3', '8.4' ]
+        php: [ '8.4', '8.5' ]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -99,7 +101,8 @@ jobs:
         uses: ramsey/composer-install@v3
         with:
            composer-options: "--prefer-dist --optimize-autoloader"
-           require-lock-file: "true"
+           require-lock-file: "false"
+           dependency-versions: "highest"
 
       - name: "Run test suite"
         run: composer run-script phpunit

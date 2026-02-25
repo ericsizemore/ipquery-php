@@ -44,11 +44,13 @@ class Client
      * To enforce rate limits, set $throttle to true and pass along any options to $throttleOptions.
      *
      * Valid options for $throttleOptions:
-     *
-     * 'id' => string
-     * 'policy' => 'fixed_window'|'sliding_window'|'token_bucket'
-     * 'limit' => integer
-     * 'interval' => a number followed by any of the units accepted by the PHP date relative formats (e.g. 3 seconds, 10 hours, 1 day, etc.)
+     * ```
+     * 'id'       => string
+     * 'policy'   => 'fixed_window'|'sliding_window'|'token_bucket'
+     * 'limit'    => integer
+     * 'interval' => a number followed by any of the units accepted by the PHP
+     *               date relative formats (3 seconds, 10 hours, 1 day, etc.)
+     * ```
      *
      * @see https://symfony.com/doc/current/rate_limiter.html
      * @see https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
@@ -70,10 +72,10 @@ class Client
 
         if ($this->throttle) {
             $this->httpClientBuilder->addPlugin(new RateLimiter(
-                (new RateLimiterFactory(
+                new RateLimiterFactory(
                     Util::validatedThrottleOptions($this->throttleOptions),
                     new InMemoryStorage(),
-                ))->create(),
+                )->create(),
             ));
         }
 

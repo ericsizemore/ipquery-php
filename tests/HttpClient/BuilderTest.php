@@ -47,20 +47,18 @@ final class BuilderTest extends TestCase
     public function initBuilder(): void
     {
         $this->builder = new Builder(
-            $this->createMock(ClientInterface::class),
-            $this->createMock(RequestFactoryInterface::class),
-            $this->createMock(StreamFactoryInterface::class),
-            $this->createMock(UriFactoryInterface::class),
+            self::createStub(ClientInterface::class),
+            self::createStub(RequestFactoryInterface::class),
+            self::createStub(StreamFactoryInterface::class),
+            self::createStub(UriFactoryInterface::class),
         );
     }
 
     public function testAddAndRemoveCache(): void
     {
-        $local               = new Local(sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'clientCacheTest' . \DIRECTORY_SEPARATOR);
-        $filesystem          = new Filesystem($local);
-        $filesystemCachePool = new FilesystemCachePool($filesystem);
-
-        $this->builder->addCache($filesystemCachePool);
+        $this->builder->addCache(
+            new FilesystemCachePool(new Filesystem(new Local(sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'clientCacheTest' . \DIRECTORY_SEPARATOR)))
+        );
 
         $reflectionClass        = new ReflectionClass($this->builder);
         $reflectionProperty     = $reflectionClass->getProperty('cachePlugin');
@@ -78,15 +76,13 @@ final class BuilderTest extends TestCase
     {
         $httpMethodsClient = $this->builder->getHttpClient();
 
-        $this->builder->addPlugin($this->createMock(Plugin::class));
+        $this->builder->addPlugin(self::createStub(Plugin::class));
 
         self::assertNotSame($httpMethodsClient, $this->builder->getHttpClient());
 
-        $local               = new Local(sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'clientCacheTest' . \DIRECTORY_SEPARATOR);
-        $filesystem          = new Filesystem($local);
-        $filesystemCachePool = new FilesystemCachePool($filesystem);
-
-        $this->builder->addCache($filesystemCachePool);
+        $this->builder->addCache(new FilesystemCachePool(
+            new Filesystem(new Local(sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'clientCacheTest' . \DIRECTORY_SEPARATOR))
+        ));
         self::assertNotSame($httpMethodsClient, $this->builder->getHttpClient());
         $this->builder->removeCache();
         self::assertNotSame($httpMethodsClient, $this->builder->getHttpClient());
@@ -94,13 +90,9 @@ final class BuilderTest extends TestCase
 
     public function testCachePluginIntegration(): void
     {
-        $local               = new Local(sys_get_temp_dir());
-        $filesystem          = new Filesystem($local);
-        $filesystemCachePool = new FilesystemCachePool($filesystem);
-
         $httpMethodsClient = $this->builder->getHttpClient();
 
-        $this->builder->addCache($filesystemCachePool);
+        $this->builder->addCache(new FilesystemCachePool(new Filesystem(new Local(sys_get_temp_dir()))));
         $httpClientAfter = $this->builder->getHttpClient();
 
         self::assertNotSame($httpMethodsClient, $httpClientAfter);
@@ -128,8 +120,8 @@ final class BuilderTest extends TestCase
 
     public function testRemoveMultiplePluginsOfSameType(): void
     {
-        $plugin1 = $this->createMock(Plugin::class);
-        $plugin2 = $this->createMock(Plugin::class);
+        $plugin1 = self::createStub(Plugin::class);
+        $plugin2 = self::createStub(Plugin::class);
 
         $this->builder->addPlugin($plugin1);
         $this->builder->addPlugin($plugin2);
@@ -153,7 +145,7 @@ final class BuilderTest extends TestCase
 
     public function testRemovePluginShouldInvalidateHttpClient(): void
     {
-        $this->builder->addPlugin($this->createMock(Plugin::class));
+        $this->builder->addPlugin(self::createStub(Plugin::class));
 
         $httpMethodsClient = $this->builder->getHttpClient();
 

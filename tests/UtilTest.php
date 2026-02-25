@@ -65,62 +65,45 @@ final class UtilTest extends TestCase
             'interval' => '1 minute',
         ];
 
-        $result = Util::validatedThrottleOptions($options);
-
-        self::assertSame($options, $result);
+        self::assertSame($options, Util::validatedThrottleOptions($options));
     }
 
     public function testValidatedThrottleOptionsWithEmptyArray(): void
     {
-        $result = Util::validatedThrottleOptions([]);
-
-        $expected = [
+        self::assertSame([
             'id'       => 'ipquery',
             'policy'   => 'fixed_window',
             'limit'    => 2,
             'interval' => '3 seconds',
-        ];
-
-        self::assertSame($expected, $result);
+        ], Util::validatedThrottleOptions([]));
     }
 
     public function testValidatedThrottleOptionsWithNull(): void
     {
-        $result = Util::validatedThrottleOptions(null);
-
-        $expected = [
+        self::assertSame([
             'id'       => 'ipquery',
             'policy'   => 'fixed_window',
             'limit'    => 2,
             'interval' => '3 seconds',
-        ];
-
-        self::assertSame($expected, $result);
+        ], Util::validatedThrottleOptions(null));
     }
 
     public function testValidatedThrottleOptionsWithPartialOptions(): void
     {
-        $options = [
-            'id'    => 'custom-id',
-            'limit' => 5,
-        ];
-
-        $result = Util::validatedThrottleOptions($options);
-
-        $expected = [
+        self::assertSame([
             'id'       => 'custom-id',
             'limit'    => 5,
             'policy'   => 'fixed_window',
             'interval' => '3 seconds',
-        ];
-
-        self::assertSame($expected, $result);
+        ], Util::validatedThrottleOptions([
+            'id'    => 'custom-id',
+            'limit' => 5,
+        ]));
     }
 
     public function testValidFormatsConstant(): void
     {
-        $expectedFormats = ['json', 'xml', 'yaml'];
-        self::assertSame(Util::ValidFormats, $expectedFormats);
+        self::assertSame(Util::ValidFormats, ['json', 'xml', 'yaml']);
     }
 
     /**

@@ -29,8 +29,8 @@ final class HistoryTest extends TestCase
 {
     public function testAddSuccess(): void
     {
-        $request  = $this->createMock(RequestInterface::class);
-        $response = $this->createMock(ResponseInterface::class);
+        $request  = self::createStub(RequestInterface::class);
+        $response = self::createStub(ResponseInterface::class);
 
         $history = new History();
 
@@ -42,18 +42,15 @@ final class HistoryTest extends TestCase
         self::assertSame($response, $history->getLastResponse());
 
         // Adding another success should overwrite
-        $response2 = $this->createMock(ResponseInterface::class);
+        $response2 = self::createStub(ResponseInterface::class);
         $history->addSuccess($request, $response2);
         self::assertSame($response2, $history->getLastResponse());
     }
 
     public function testHistory(): void
     {
-        $request   = $this->createMock(RequestInterface::class);
-        $exception = $this->createMock(ClientExceptionInterface::class);
-
         $history = new History();
-        $history->addFailure($request, $exception);
+        $history->addFailure(self::createStub(RequestInterface::class), self::createStub(ClientExceptionInterface::class));
 
         self::assertNull($history->getLastResponse());
     }

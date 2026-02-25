@@ -16,9 +16,9 @@ namespace Esi\IPQuery;
 
 abstract class Util
 {
-    public const int MaxAmountOfIps = 10_000;
+    final public const int MaxAmountOfIps = 10_000;
 
-    public const array ValidFormats = ['json', 'xml', 'yaml'];
+    final public const array ValidFormats = ['json', 'xml', 'yaml'];
 
     public static function isValidFormat(string $format): bool
     {

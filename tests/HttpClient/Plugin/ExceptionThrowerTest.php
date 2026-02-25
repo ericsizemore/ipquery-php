@@ -18,7 +18,6 @@ use Esi\IPQuery\HttpClient\Plugin\ExceptionThrower;
 use Http\Client\Promise\HttpFulfilledPromise;
 use Http\Promise\Promise;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -33,18 +32,15 @@ final class ExceptionThrowerTest extends TestCase
 {
     public function testHandleRequest(): void
     {
-        $exceptionThrower = new ExceptionThrower();
-        $request          = $this->createMock(RequestInterface::class);
-
-        $response = $this->createMock(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(200);
 
         $httpFulfilledPromise = new HttpFulfilledPromise($response);
 
-        $promise = $exceptionThrower->handleRequest(
-            $request,
-            static fn ($request): HttpFulfilledPromise => $httpFulfilledPromise,
-            static fn ($request): HttpFulfilledPromise => $httpFulfilledPromise
+        $promise = new ExceptionThrower()->handleRequest(
+            self::createStub(RequestInterface::class),
+            static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise,
+            static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise
         );
 
         self::assertInstanceOf(Promise::class, $promise);
@@ -53,14 +49,11 @@ final class ExceptionThrowerTest extends TestCase
 
     public function testHandleRequestWithDifferentErrorCodes(): void
     {
-        $exceptionThrower = new ExceptionThrower();
-        $request          = $this->createMock(RequestInterface::class);
-
         $statusCodes   = [401, 403, 404, 500, 503];
         $reasonPhrases = ['Unauthorized', 'Forbidden', 'Not Found', 'Internal Server Error', 'Service Unavailable'];
 
         foreach ($statusCodes as $index => $statusCode) {
-            $response = $this->createMock(ResponseInterface::class);
+            $response = self::createStub(ResponseInterface::class);
             $response->method('getStatusCode')->willReturn($statusCode);
             $response->method('getReasonPhrase')->willReturn($reasonPhrases[$index]);
 
@@ -71,10 +64,10 @@ final class ExceptionThrowerTest extends TestCase
             $this->expectExceptionCode($statusCode);
 
             try {
-                $exceptionThrower->handleRequest(
-                    $request,
-                    static fn (MockObject&RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise,
-                    static fn (MockObject&RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise
+                new ExceptionThrower()->handleRequest(
+                    self::createStub(RequestInterface::class),
+                    static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise,
+                    static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise
                 )->wait();
             } catch (RuntimeException $e) {
                 self::assertSame($statusCode, $e->getCode());
@@ -89,13 +82,10 @@ final class ExceptionThrowerTest extends TestCase
 
     public function testHandleRequestWithError(): void
     {
-        $exceptionThrower = new ExceptionThrower();
-        $request          = $this->createMock(RequestInterface::class);
-
-        $stream = $this->createMock(StreamInterface::class);
+        $stream = self::createStub(StreamInterface::class);
         $stream->method('__toString')->willReturn('');
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(400);
         $response->method('getBody')->willReturn($stream);
         $response->method('getReasonPhrase')->willReturn('Bad Request');
@@ -105,28 +95,25 @@ final class ExceptionThrowerTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Bad Request');
 
-        $exceptionThrower->handleRequest(
-            $request,
-            static fn (MockObject&RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise,
-            static fn (MockObject&RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise
+        new ExceptionThrower()->handleRequest(
+            self::createStub(RequestInterface::class),
+            static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise,
+            static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise
         )->wait();
     }
 
     public function testHandleRequestWithRedirectStatus(): void
     {
-        $exceptionThrower = new ExceptionThrower();
-        $request          = $this->createMock(RequestInterface::class);
-
         // Test that 3xx codes don't throw exceptions
-        $response = $this->createMock(ResponseInterface::class);
+        $response = self::createStub(ResponseInterface::class);
         $response->method('getStatusCode')->willReturn(302);
 
         $httpFulfilledPromise = new HttpFulfilledPromise($response);
 
-        $result = $exceptionThrower->handleRequest(
-            $request,
-            static fn (MockObject&RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise,
-            static fn (MockObject&RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise
+        $result = new ExceptionThrower()->handleRequest(
+            self::createStub(RequestInterface::class),
+            static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise,
+            static fn (RequestInterface $request): HttpFulfilledPromise => $httpFulfilledPromise
         )->wait();
 
         self::assertSame($response, $result);

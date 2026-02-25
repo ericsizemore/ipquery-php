@@ -13,11 +13,11 @@
 `Esi\IPQuery` - A PHP library for `ipquery.io`, a free and performant ip address API.
 
 > [!IMPORTANT]
-> WIP: This library is not yet finished. Not recommended for production.
+> WIP: This library is not yet finished. Not recommended for production. The API and requirements/dependencies can, and most likely will, change.
 
 ### Requirements
 
-* PHP >= 8.3
+* PHP >= 8.4
 * Composer
 * And library(ies) that provide(s):
     * PSR-7 HTTP Message implementation
@@ -37,7 +37,7 @@ composer require esi/ipquery-php
 # Then install your preferred PSR implementations.
 
 # Example 1: Using Symfony components
-composer require symfony/http-client:^7.0 symfony/psr-http-message-bridge:^7.0 nyholm/psr7:^1.0
+composer require symfony/http-client:^8.0 symfony/psr-http-message-bridge:^8.0 nyholm/psr7:^1.0
 
 # Example 2: Using Guzzle
 composer require guzzlehttp/guzzle:^7.0

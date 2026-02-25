@@ -21,6 +21,7 @@ use Esi\IPQuery\HttpClient\Builder;
 use Esi\IPQuery\Util;
 use Http\Client\Common\HttpMethodsClientInterface;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -39,6 +40,7 @@ use function random_int;
 #[CoversClass(Builder::class)]
 #[CoversClass(AbstractApi::class)]
 #[CoversClass(Util::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class IPTest extends TestCase
 {
     private static string $mockData = <<<'DATA'
@@ -73,42 +75,33 @@ final class IPTest extends TestCase
 
     public function testInvalidFormat(): void
     {
-        $client = new Client();
-        $ip     = new IP($client);
-
         $this->expectException(InvalidArgumentException::class);
 
-        $ip->sendRequest(['1.1.1.1', '8.8.8.8'], 'toml');
+        new IP(new Client())->sendRequest(['1.1.1.1', '8.8.8.8'], 'toml');
     }
 
     public function testInvalidIp(): void
     {
-        $client = new Client();
-        $ip     = new IP($client);
-
         $this->expectException(InvalidArgumentException::class);
 
-        $ip->sendRequest('102.92', 'toml');
+        new IP(new Client())->sendRequest('102.92', 'toml');
     }
 
     public function testPrepareUriWithArray(): void
     {
         // Create a concrete implementation for testing
-        $client = new Client();
-        $api    = new class ($client) extends AbstractApi {
+        $api = new class (new Client()) extends AbstractApi {
             /**
              * @param array<string>|string $query
              */
             public function testPrepareUri(array|string $query, string $format = 'json'): string
             {
-                // Expose the private method for testing
-                $reflectionClass  = new ReflectionClass(parent::class);
-                $reflectionMethod = $reflectionClass->getMethod('prepareUri');
-
                 /**
                  * @phpstan-var string $invokedValue
                  */
-                $invokedValue = $reflectionMethod->invoke($this, $query, $format);
+                $invokedValue = new ReflectionClass(parent::class)
+                    ->getMethod('prepareUri')
+                    ->invoke($this, $query, $format);
 
                 return $invokedValue;
             }
@@ -120,20 +113,18 @@ final class IPTest extends TestCase
 
     public function testPrepareUriWithDifferentFormats(): void
     {
-        $client = new Client();
-        $api    = new class ($client) extends AbstractApi {
+        $api = new class (new Client()) extends AbstractApi {
             /**
              * @param array<string>|string $query
              */
             public function testPrepareUri(array|string $query, string $format = 'json'): string
             {
-                $reflectionClass  = new ReflectionClass(parent::class);
-                $reflectionMethod = $reflectionClass->getMethod('prepareUri');
-
                 /**
                  * @phpstan-var string $invokedValue
                  */
-                $invokedValue = $reflectionMethod->invoke($this, $query, $format);
+                $invokedValue = new ReflectionClass(parent::class)
+                    ->getMethod('prepareUri')
+                    ->invoke($this, $query, $format);
 
                 return $invokedValue;
             }
@@ -159,8 +150,7 @@ final class IPTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->method('getHttpClient')->willReturn($mockClient);
 
-        $ip     = new IP($client);
-        $result = $ip->sendRequest(['192.168.1.1', '10.0.0.1']);
+        $result = new IP($client)->sendRequest(['192.168.1.1', '10.0.0.1']);
 
         self::assertSame(self::$mockData, $result);
     }
@@ -181,8 +171,7 @@ final class IPTest extends TestCase
         $client = $this->createMock(Client::class);
         $client->method('getHttpClient')->willReturn($mockClient);
 
-        $ip     = new IP($client);
-        $result = $ip->sendRequest('192.168.1.1', 'xml');
+        $result = new IP($client)->sendRequest('192.168.1.1', 'xml');
 
         self::assertSame('<xml>data</xml>', $result);
     }
@@ -202,9 +191,6 @@ final class IPTest extends TestCase
 
     public function testTooManyIps(): void
     {
-        $client = new Client();
-        $ip     = new IP($client);
-
         $this->expectException(InvalidArgumentException::class);
 
         $ips     = [];
@@ -215,7 +201,7 @@ final class IPTest extends TestCase
             ++$ipCount;
         }
 
-        $ip->sendRequest($ips);
+        new IP(new Client())->sendRequest($ips);
     }
 
     private function generateRandomIp(): string
@@ -230,11 +216,9 @@ final class IPTest extends TestCase
             ->getMock();
         $httpClient->method('sendRequest');
 
-        $client = Client::createWithHttpClient($httpClient);
-
         return $this->getMockBuilder(IP::class)
             ->onlyMethods(['sendRequest', 'get'])
-            ->setConstructorArgs([$client])
+            ->setConstructorArgs([Client::createWithHttpClient($httpClient)])
             ->getMock();
     }
 }

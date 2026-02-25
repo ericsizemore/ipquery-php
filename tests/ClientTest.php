@@ -44,12 +44,8 @@ final class ClientTest extends TestCase
 {
     public function testAddAndRemoveCache(): void
     {
-        $local      = new Local(sys_get_temp_dir());
-        $filesystem = new Filesystem($local);
-        $pool       = new FilesystemCachePool($filesystem);
-
         $client = new Client();
-        $client->addCache($pool);
+        $client->addCache(new FilesystemCachePool(new Filesystem(new Local(sys_get_temp_dir()))));
 
         $httpClientBuilder = $this->getPrivateProperty($client, 'httpClientBuilder');
         $cachePlugin       = $this->getPrivateProperty($httpClientBuilder, 'cachePlugin');
@@ -71,42 +67,33 @@ final class ClientTest extends TestCase
      */
     public function testConstructorWithCustomBuilder(): void
     {
-        $builder = new Builder();
-        $client  = new Client($builder);
-
-        self::assertInstanceOf(Client::class, $client);
+        self::assertInstanceOf(Client::class, new Client(new Builder()));
         // Verify the builder was used correctly
     }
 
     public function testConstructorWithCustomThrottleOptions(): void
     {
-        $customOptions = [
-            'id'       => 'custom-test',
-            'policy'   => 'sliding_window',
-            'limit'    => 10,
-            'interval' => '5 seconds',
-        ];
-
-        $client = new Client(
+        self::assertInstanceOf(Client::class, new Client(
             throttle: true,
-            throttleOptions: $customOptions
-        );
-
-        self::assertInstanceOf(Client::class, $client);
+            throttleOptions: [
+                'id'       => 'custom-test',
+                'policy'   => 'sliding_window',
+                'limit'    => 10,
+                'interval' => '5 seconds',
+            ]
+        ));
     }
 
     public function testConstructorWithThrottleEnabled(): void
     {
-        $throttleOptions = [
-            'id'       => 'test-throttle',
-            'policy'   => 'fixed_window',
-            'limit'    => 5,
-            'interval' => '10 seconds',
-        ];
-
         $client = new Client(
             throttle: true,
-            throttleOptions: $throttleOptions
+            throttleOptions: [
+                'id'       => 'test-throttle',
+                'policy'   => 'fixed_window',
+                'limit'    => 5,
+                'interval' => '10 seconds',
+            ]
         );
 
         self::assertInstanceOf(Client::class, $client);
@@ -134,11 +121,13 @@ final class ClientTest extends TestCase
 
     public function testCreateWithHttpClient(): void
     {
-        $httpClient = $this->getMockBuilder(ClientInterface::class)
+        $httpClient = self::getStubBuilder(ClientInterface::class)
             ->onlyMethods(['sendRequest'])
-            ->getMock();
+            ->getStub();
         $httpClient
             ->method('sendRequest');
+
+        self::assertInstanceOf(ClientInterface::class, $httpClient);
 
         $client = Client::createWithHttpClient($httpClient);
 
@@ -151,10 +140,8 @@ final class ClientTest extends TestCase
      */
     public function testGetLastResponse(): void
     {
-        $client = new Client();
-
         // Initially should be null
-        self::assertNull($client->getLastResponse());
+        self::assertNull(new Client()->getLastResponse());
 
         // After making a request, should return the response
         // Will need to mock an actual HTTP call here
@@ -162,8 +149,7 @@ final class ClientTest extends TestCase
 
     public function testGetStreamFactory(): void
     {
-        $client = new Client();
-        self::assertInstanceOf(StreamFactoryInterface::class, $client->getStreamFactory());
+        self::assertInstanceOf(StreamFactoryInterface::class, new Client()->getStreamFactory());
     }
 
     private function getPrivateProperty(
