@@ -1,6 +1,6 @@
 # .scrutinizer.yml
 build:
-    image: default-focal
+    image: default-jammy
     environment:
         php: 8.4.1
     nodes:
