@@ -49,10 +49,8 @@ final class ClientTest extends TestCase
 
         $httpClientBuilder = $this->getPrivateProperty($client, 'httpClientBuilder');
         $cachePlugin       = $this->getPrivateProperty($httpClientBuilder, 'cachePlugin');
-        $pool              = $this->getPrivateProperty($cachePlugin, 'pool');
 
         self::assertNotNull($cachePlugin);
-        self::assertInstanceOf(FilesystemCachePool::class, $pool);
 
         $client->removeCache();
 

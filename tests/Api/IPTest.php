@@ -184,7 +184,7 @@ final class IPTest extends TestCase
             ->with('1.1.1.1')
             ->willReturn(self::$mockData);
         /**
-         * @psalm-var MockObject&IP $mockObject
+         * @psalm-var IP&MockObject $mockObject
          */
         self::assertSame(self::$mockData, $mockObject->sendRequest('1.1.1.1'));
     }
