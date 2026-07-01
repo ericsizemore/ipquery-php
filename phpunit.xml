@@ -34,7 +34,6 @@
         <bootstrap class="DG\BypassFinals\PHPUnitExtension">
             <parameter name="bypassFinal" value="true"/>
             <parameter name="bypassReadOnly" value="false"/>
-            <parameter name="cacheDirectory" value="./build/cache"/>
         </bootstrap>
     </extensions>
 </phpunit>
