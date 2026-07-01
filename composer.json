@@ -68,7 +68,7 @@
         "phpunit/phpunit": "^13.2",
         "psalm/plugin-phpunit": "^0.19",
         "rector/rector": "^2.4",
-        "vimeo/psalm": "^6.16 || ^7.0"
+        "vimeo/psalm": "^6.16"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
