@@ -57,7 +57,7 @@
         "esi/phpunit-coverage-check": "^3.1",
         "friendsofphp/php-cs-fixer": "^3.95",
         "guzzlehttp/guzzle": "^7.11",
-        "guzzlehttp/psr7": "^2.12",
+        "guzzlehttp/psr7": "^3.0",
         "nyholm/psr7": "^1.8",
         "php-http/mock-client": "^1.6",
         "phpstan/extension-installer": "^1.4",
